@@ -1,6 +1,8 @@
 <template>
   <div class="flex justify-center">
-    <input type="text" v-model="id" @keypress.enter="runScan(id)" class="w-1/2 m-10 p-3 border-2 outline-none">
+    <input type="search" v-model="id" @keypress.enter="runScan(id)"
+           class="w-1/2 m-10 p-3 border-2 outline-none"
+           placeholder="Search TON addresses, domains and transactions...">
   </div>
   <div class="flex justify-center">
     <ul v-if="result">
