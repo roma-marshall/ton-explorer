@@ -20,10 +20,10 @@
       </tr>
       </thead>
       <tbody>
-      <tr v-for="item in result['transactions']" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-          {{ item['utime'] }}
-        </th>
+      <tr v-for="(item, i) in result['transactions']" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+        <td class="px-6 py-4 whitespace-nowrap">
+          {{ timestamp[i] }}
+        </td>
         <td class="px-6 py-4">
           {{ item['hash'] }}
         </td>
@@ -44,13 +44,24 @@ import { ref } from 'vue'
 
 let result = ref(null)
 let id = ref()
-let transaction = ref()
 let limit = 50
+let timestamp = ref([])
 
-const runScan = (id) => {
-  transaction = `https://tonapi.io/v2/blockchain/accounts/${id}/transactions?limit=${limit}`
-  fetch(transaction)
+const runScan = async (id) => {
+  let url = `https://tonapi.io/v2/blockchain/accounts/${id}/transactions?limit=${limit}`
+  const response = await fetch(url)
       .then(response => response.json())
       .then(data => result.value = data)
+
+  for (let i = 0; i <= response['transactions'].length; i++) {
+    let temp = new Date(response['transactions'][i]['utime'] * 1000)
+    let year = temp.getFullYear()
+    let month = temp.toLocaleString('en', { month: 'short' })
+    let day = temp.getDate()
+    let hours = temp.getHours()
+    let minutes = (temp.getMinutes() < 10 ? '0' : '') + temp.getMinutes()
+    let res = `${day} ${month}, ${hours}:${minutes}`
+    timestamp.value.push((res))
+  }
 }
 </script>
