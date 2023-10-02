@@ -55,7 +55,6 @@ const runScan = async (id) => {
 
   for (let i = 0; i <= response['transactions'].length; i++) {
     let temp = new Date(response['transactions'][i]['utime'] * 1000)
-    let year = temp.getFullYear()
     let month = temp.toLocaleString('en', { month: 'short' })
     let day = temp.getDate()
     let hours = temp.getHours()
