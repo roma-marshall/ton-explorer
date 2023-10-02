@@ -53,6 +53,10 @@ const runScan = async (id) => {
       .then(response => response.json())
       .then(data => result.value = data)
 
+  await getTimestamp(response)
+}
+
+const getTimestamp = async (response) => {
   for (let i = 0; i <= response['transactions'].length; i++) {
     let temp = new Date(response['transactions'][i]['utime'] * 1000)
     let month = temp.toLocaleString('en', { month: 'short' })
