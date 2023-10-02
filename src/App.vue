@@ -44,12 +44,11 @@ import { ref } from 'vue'
 
 let result = ref(null)
 let id = ref()
-let transaction = ref()
 let limit = 50
 
-const runScan = (id) => {
-  transaction = `https://tonapi.io/v2/blockchain/accounts/${id}/transactions?limit=${limit}`
-  fetch(transaction)
+const runScan = async (id) => {
+  let url = `https://tonapi.io/v2/blockchain/accounts/${id}/transactions?limit=${limit}`
+  const response = await fetch(url)
       .then(response => response.json())
       .then(data => result.value = data)
 }
