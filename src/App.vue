@@ -4,7 +4,6 @@
            class="w-1/2 m-10 p-3 border-2 outline-none"
            placeholder="Search TON addresses, domains and transactions...">
   </div>
-  <p>test: {{ timestamp[0] }}</p>
   <div class="relative overflow-x-auto">
     <table v-if="result" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
       <thead v-if="!result['error']" class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -22,10 +21,9 @@
       </thead>
       <tbody>
       <tr v-for="(item, i) in result['transactions']" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-<!--          {{ item['utime'] }}-->
+        <td class="px-6 py-4 whitespace-nowrap">
           {{ timestamp[i] }}
-        </th>
+        </td>
         <td class="px-6 py-4">
           {{ item['hash'] }}
         </td>
@@ -55,9 +53,15 @@ const runScan = async (id) => {
       .then(response => response.json())
       .then(data => result.value = data)
 
-  for(let i = 0; i <= response['transactions'].length; i++) {
-    // console.log(response['transactions'][i]['utime'])
-    timestamp.value.push(ref(response['transactions'][i]['utime']))
+  for (let i = 0; i <= response['transactions'].length; i++) {
+    let temp = new Date(response['transactions'][i]['utime'] * 1000)
+    let year = temp.getFullYear()
+    let month = temp.toLocaleString('en', { month: 'short' })
+    let day = temp.getDate()
+    let hours = temp.getHours()
+    let minutes = (temp.getMinutes() < 10 ? '0' : '') + temp.getMinutes()
+    let res = `${day} ${month}, ${hours}:${minutes}`
+    timestamp.value.push((res))
   }
 }
 </script>
