@@ -64,7 +64,7 @@ const getTimestamp = async (response) => {
     let hours = temp.getHours()
     let minutes = (temp.getMinutes() < 10 ? '0' : '') + temp.getMinutes()
     let res = `${day} ${month}, ${hours}:${minutes}`
-    timestamp.value.push((res))
+    timestamp.value.push(res)
   }
 }
 </script>
