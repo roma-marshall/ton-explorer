@@ -25,7 +25,7 @@
           {{ timestamp[i] }}
         </td>
         <td class="px-6 py-4">
-          {{ item['hash'] }}
+          {{ hash[i] }}
         </td>
         <td class="px-6 py-4">
           {{ item['account']['address'] }}
@@ -46,6 +46,7 @@ let result = ref(null)
 let id = ref()
 let limit = 50
 let timestamp = ref([])
+let hash = ref([])
 
 const fetchData = async (id) => {
   let url = `https://tonapi.io/v2/blockchain/accounts/${id}/transactions?limit=${limit}`
@@ -53,18 +54,21 @@ const fetchData = async (id) => {
   const data = await response.json()
   result.value = data
 
-  await getTimestamp(data)
+  await getData(data)
 }
 
-const getTimestamp = async (data) => {
+const getData = async (data) => {
   for (let i = 0; i <= data['transactions'].length; i++) {
-    let temp = new Date(data['transactions'][i]['utime'] * 1000)
-    let month = temp.toLocaleString('en', { month: 'short' })
-    let day = temp.getDate()
-    let hours = temp.getHours()
-    let minutes = (temp.getMinutes() < 10 ? '0' : '') + temp.getMinutes()
-    let res = `${day} ${month}, ${hours}:${minutes}`
-    timestamp.value.push(res)
+    // timestamp
+    let timestampTemp = new Date(data['transactions'][i]['utime'] * 1000)
+    let month = timestampTemp.toLocaleString('en', { month: 'short' })
+    let day = timestampTemp.getDate()
+    let hours = timestampTemp.getHours()
+    let minutes = (timestampTemp.getMinutes() < 10 ? '0' : '') + timestampTemp.getMinutes()
+    timestamp.value.push(`${day} ${month}, ${hours}:${minutes}`)
+
+    // hash
+    hash.value.push(data['transactions'][i]['hash'])
   }
 }
 </script>
