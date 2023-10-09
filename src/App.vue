@@ -1,10 +1,9 @@
 <template>
   <div class="flex justify-center">
-    <input type="search" v-model="id" @keypress.enter="fetchData(id)"
+    <input type="search" v-model="id" @keypress.enter="fetchData()"
            class="w-1/2 m-10 p-3 border-2 outline-none"
            placeholder="Search TON addresses, domains and transactions...">
   </div>
-<!--  {{ error }}-->
   <div class="relative overflow-x-auto">
     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
       <thead v-if="data && !error" class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -44,14 +43,14 @@
 import { ref } from 'vue'
 
 let data = ref()
-let id = ref()
+let id = null
 let limit = 50
 let timestamp = ref([])
 let hash = ref([])
 let address = ref([])
 let error = ref(null)
 
-const fetchData = async (id) => {
+const fetchData = async () => {
   let url = `https://tonapi.io/v2/blockchain/accounts/${id}/transactions?limit=${limit}`
   const response = await fetch(url)
   data = await response.json()
