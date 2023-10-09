@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-center">
-    <input type="search" v-model="id" @keypress.enter="runScan(id)"
+    <input type="search" v-model="id" @keypress.enter="fetchData(id)"
            class="w-1/2 m-10 p-3 border-2 outline-none"
            placeholder="Search TON addresses, domains and transactions...">
   </div>
@@ -47,18 +47,18 @@ let id = ref()
 let limit = 50
 let timestamp = ref([])
 
-const runScan = async (id) => {
+const fetchData = async (id) => {
   let url = `https://tonapi.io/v2/blockchain/accounts/${id}/transactions?limit=${limit}`
   const response = await fetch(url)
-      .then(response => response.json())
-      .then(data => result.value = data)
+  const data = await response.json()
+  result.value = data
 
-  await getTimestamp(response)
+  await getTimestamp(data)
 }
 
-const getTimestamp = async (response) => {
-  for (let i = 0; i <= response['transactions'].length; i++) {
-    let temp = new Date(response['transactions'][i]['utime'] * 1000)
+const getTimestamp = async (data) => {
+  for (let i = 0; i <= data['transactions'].length; i++) {
+    let temp = new Date(data['transactions'][i]['utime'] * 1000)
     let month = temp.toLocaleString('en', { month: 'short' })
     let day = temp.getDate()
     let hours = temp.getHours()
