@@ -48,8 +48,8 @@ let id = ref()
 let limit = 50
 let timestamp = ref([])
 let hash = ref([])
-let error = ref(null)
 let address = ref([])
+let error = ref(null)
 
 const fetchData = async (id) => {
   let url = `https://tonapi.io/v2/blockchain/accounts/${id}/transactions?limit=${limit}`
