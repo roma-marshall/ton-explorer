@@ -58,17 +58,17 @@ const fetchData = async (id) => {
 }
 
 const getData = async (data) => {
-  for (let i = 0; i <= data['transactions'].length; i++) {
-    // timestamp
-    let timestampTemp = new Date(data['transactions'][i]['utime'] * 1000)
-    let month = timestampTemp.toLocaleString('en', { month: 'short' })
-    let day = timestampTemp.getDate()
-    let hours = timestampTemp.getHours()
-    let minutes = (timestampTemp.getMinutes() < 10 ? '0' : '') + timestampTemp.getMinutes()
-    timestamp.value.push(`${day} ${month}, ${hours}:${minutes}`)
+    data['transactions'].forEach(item => {
+      // timestamp
+      let timestampTemp = new Date(item['utime'] * 1000)
+      let month = timestampTemp.toLocaleString('en', { month: 'short' })
+      let day = timestampTemp.getDate()
+      let hours = timestampTemp.getHours()
+      let minutes = (timestampTemp.getMinutes() < 10 ? '0' : '') + timestampTemp.getMinutes()
+      timestamp.value.push(`${day} ${month}, ${hours}:${minutes}`)
 
-    // hash
-    hash.value.push(data['transactions'][i]['hash'])
-  }
+      // hash
+      hash.value.push(item['hash'])
+    })
 }
 </script>
