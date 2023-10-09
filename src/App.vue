@@ -4,9 +4,10 @@
            class="w-1/2 m-10 p-3 border-2 outline-none"
            placeholder="Search TON addresses, domains and transactions...">
   </div>
+<!--  {{ error }}-->
   <div class="relative overflow-x-auto">
-    <table v-if="result" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-      <thead v-if="!result['error']" class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+      <thead v-if="data && !error" class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
       <tr>
         <th scope="col" class="px-6 py-3">
           timestamp
@@ -20,7 +21,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr v-for="(item, i) in result['transactions']" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+      <tr v-if="data" v-for="(item, i) in data['transactions']" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
         <td class="px-6 py-4 whitespace-nowrap">
           {{ timestamp[i] }}
         </td>
@@ -28,12 +29,12 @@
           {{ hash[i] }}
         </td>
         <td class="px-6 py-4">
-          {{ item['account']['address'] }}
+          {{ address[i] }}
         </td>
       </tr>
       </tbody>
-      <p v-if="result['error']" class="flex justify-center">
-        {{ result['error'] }}
+      <p v-if="error" class="flex justify-center">
+        {{ error }}
       </p>
     </table>
   </div>
@@ -42,18 +43,19 @@
 <script setup>
 import { ref } from 'vue'
 
-let result = ref(null)
+let data = ref()
 let id = ref()
 let limit = 50
 let timestamp = ref([])
 let hash = ref([])
+let error = ref(null)
+let address = ref([])
 
 const fetchData = async (id) => {
   let url = `https://tonapi.io/v2/blockchain/accounts/${id}/transactions?limit=${limit}`
   const response = await fetch(url)
-  const data = await response.json()
-  result.value = data
-
+  data = await response.json()
+  error.value = data['error']
   await getData(data)
 }
 
@@ -69,6 +71,9 @@ const getData = async (data) => {
 
       // hash
       hash.value.push(item['hash'])
+
+      // address
+      address.value.push(item['account']['address'])
     })
 }
 </script>
