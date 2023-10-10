@@ -1,12 +1,12 @@
 <template>
   <div class="flex justify-center">
-    <input type="search" v-model="id" @keypress.enter="runScan(id)"
+    <input type="search" v-model="id" @keypress.enter="fetchData()"
            class="w-1/2 m-10 p-3 border-2 outline-none"
            placeholder="Search TON addresses, domains and transactions...">
   </div>
   <div class="relative overflow-x-auto">
-    <table v-if="result" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-      <thead v-if="!result['error']" class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+      <thead v-if="data && !error" class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
       <tr>
         <th scope="col" class="px-6 py-3">
           timestamp
@@ -20,20 +20,20 @@
       </tr>
       </thead>
       <tbody>
-      <tr v-for="(item, i) in result['transactions']" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+      <tr v-if="data" v-for="(item, i) in data['transactions']" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
         <td class="px-6 py-4 whitespace-nowrap">
           {{ timestamp[i] }}
         </td>
         <td class="px-6 py-4">
-          {{ item['hash'] }}
+          {{ hash[i] }}
         </td>
         <td class="px-6 py-4">
-          {{ item['account']['address'] }}
+          {{ address[i] }}
         </td>
       </tr>
       </tbody>
-      <p v-if="result['error']" class="flex justify-center">
-        {{ result['error'] }}
+      <p v-if="error" class="flex justify-center">
+        {{ error }}
       </p>
     </table>
   </div>
@@ -42,29 +42,37 @@
 <script setup>
 import { ref } from 'vue'
 
-let result = ref(null)
-let id = ref()
+let data = ref()
+let id = null
 let limit = 50
 let timestamp = ref([])
+let hash = ref([])
+let address = ref([])
+let error = ref(null)
 
-const runScan = async (id) => {
+const fetchData = async () => {
   let url = `https://tonapi.io/v2/blockchain/accounts/${id}/transactions?limit=${limit}`
   const response = await fetch(url)
-      .then(response => response.json())
-      .then(data => result.value = data)
-
-  await getTimestamp(response)
+  data = await response.json()
+  error.value = data['error']
+  await getData(data)
 }
 
-const getTimestamp = async (response) => {
-  for (let i = 0; i <= response['transactions'].length; i++) {
-    let temp = new Date(response['transactions'][i]['utime'] * 1000)
-    let month = temp.toLocaleString('en', { month: 'short' })
-    let day = temp.getDate()
-    let hours = temp.getHours()
-    let minutes = (temp.getMinutes() < 10 ? '0' : '') + temp.getMinutes()
-    let res = `${day} ${month}, ${hours}:${minutes}`
-    timestamp.value.push(res)
-  }
+const getData = async (data) => {
+    data['transactions'].forEach(item => {
+      // timestamp
+      let timestampTemp = new Date(item['utime'] * 1000)
+      let month = timestampTemp.toLocaleString('en', { month: 'short' })
+      let day = timestampTemp.getDate()
+      let hours = timestampTemp.getHours()
+      let minutes = (timestampTemp.getMinutes() < 10 ? '0' : '') + timestampTemp.getMinutes()
+      timestamp.value.push(`${day} ${month}, ${hours}:${minutes}`)
+
+      // hash
+      hash.value.push(item['hash'])
+
+      // address
+      address.value.push(item['account']['address'])
+    })
 }
 </script>
