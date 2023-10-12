@@ -5,44 +5,50 @@
            placeholder="Search TON addresses, domains and transactions...">
   </div>
   <div class="relative overflow-x-auto">
-    <div v-if="isOk" class="hidden sm:grid grid-cols-4 text-xs bg-gray-50 text-gray-700 dark:text-gray-400 uppercase font-bold">
-        <div class="sm:px-6 px-1.5 py-3">
-          timestamp
-        </div>
-        <div class="sm:px-6 px-1.5 py-3">
-          status
-        </div>
-        <div class="sm:px-6 px-1.5 py-3">
-          address
-        </div>
-        <div class="flex justify-end sm:px-6 px-1.5 py-3">
-          amount
-        </div>
+    <div v-if="isOk"
+         class="hidden sm:grid grid-cols-12 text-xs bg-gray-50 text-gray-700 dark:text-gray-400 uppercase font-bold">
+      <div class="sm:px-6 px-1.5 py-3">
+        timestamp
       </div>
-      <div v-if="dataBeta" v-for="(item, i) in dataBeta['result']"
-           class="grid grid-cols-4 bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-        <div class="sm:px-6 px-1.5 py-4">
-          {{ timestamp[i] }}
-        </div>
-        <div class="sm:px-6 px-1.5 py-4">
-          <span v-if="status[i] == 'in'" class="flex">
-            <img src="./assets/out.svg" class="h-5 mr-2" alt="out.svg">
+      <div class="sm:px-6 px-1.5 py-3">
+        status
+      </div>
+      <div class="sm:px-6 px-1.5 py-3 grid col-start-4 col-end-7">
+        from
+      </div>
+      <div class="sm:px-6 px-1.5 py-3 grid col-start-8 col-end-12">
+        to
+      </div>
+      <div class="flex justify-end sm:px-6 px-1.5 py-3">
+        amount
+      </div>
+    </div>
+    <div v-if="dataBeta" v-for="(item, i) in dataBeta['result']"
+         class="grid grid-cols-12 text-sm bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+      <div class="sm:px-6 px-1.5 py-4">
+        {{ timestamp[i] }}
+      </div>
+      <div class="sm:px-6 px-1.5 py-4">
+        <span v-if="status[i] == 'in'" class="flex">
+            <img src="./assets/out.svg" class="h-6 mr-2 mt-2" alt="in.svg">
             Sent TON
-          </span>
-          <span v-if="status[i] == 'out'" class="flex">
-            <img src="./assets/in.svg" class="h-5 mr-2" alt="in.svg">
+        </span>
+        <span v-if="status[i] == 'out'" class="flex">
+            <img src="./assets/in.svg" class="h-6 mr-2 mt-2" alt="out.svg">
             Received TON
-          </span>
-        </div>
-        <div class="sm:px-6 px-1.5 py-4">
-          <span v-if="status[i] == 'in'">{{ sender[i] }}</span>
-          <span v-if="status[i] == 'out'">{{ recipient[i] }}</span>
-        </div>
-        <div class="flex justify-end sm:px-6 px-1.5 py-4">
-          <span v-if="status[i] == 'in'" class="text-red-500">- {{ amount[i] }} TON</span>
-          <span v-if="status[i] == 'out'" class="text-green-500">+ {{ amount[i] }} TON</span>
-        </div>
+        </span>
       </div>
+      <div class="sm:px-6 px-1.5 py-4 grid col-start-4 col-end-7">
+        {{ sender[i] }}
+      </div>
+      <div class="sm:px-6 px-1.5 py-4 grid col-start-8 col-end-12">
+        {{ recipient[i] }}
+      </div>
+      <div class="flex justify-end sm:px-6 px-1.5 py-4 text-right font-semibold">
+        <span v-if="status[i] == 'in'" class="text-in">-&nbsp;{{ amount[i] }}&nbsp;TON</span>
+        <span v-if="status[i] == 'out'" class="text-out">+&nbsp;{{ amount[i] }}&nbsp;TON</span>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -77,7 +83,7 @@ const getData = async (dataBeta) => {
   dataBeta['result'].forEach(item => {
     // timestamp
     let timestampTemp = new Date(item['utime'] * 1000)
-    let month = timestampTemp.toLocaleString('en', { month: 'short' })
+    let month = timestampTemp.toLocaleString('en', {month: 'short'})
     let day = timestampTemp.getDate()
     let hours = timestampTemp.getHours()
     let minutes = (timestampTemp.getMinutes() < 10 ? '0' : '') + timestampTemp.getMinutes()
