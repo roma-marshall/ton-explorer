@@ -12,6 +12,9 @@
           timestamp
         </th>
         <th scope="col" class="px-6 py-3">
+          status
+        </th>
+        <th scope="col" class="px-6 py-3">
           recipient
         </th>
         <th scope="col" class="px-6 py-3">
@@ -19,9 +22,6 @@
         </th>
         <th scope="col" class="px-6 py-3">
           amount
-        </th>
-        <th scope="col" class="px-6 py-3">
-          status
         </th>
       </tr>
       </thead>
@@ -31,16 +31,24 @@
           {{ timestamp[i] }}
         </td>
         <td class="px-6 py-4">
+          <span v-if="status[i] == 'in'" class="flex">
+            <img src="./assets/out.svg" class="h-5 mr-2" alt="out.svg">
+            Sent TON
+          </span>
+          <span v-if="status[i] == 'out'" class="flex">
+            <img src="./assets/in.svg" class="h-5 mr-2" alt="in.svg">
+            Received TON
+          </span>
+        </td>
+        <td class="px-6 py-4">
           {{ recipient[i] }}
         </td>
         <td class="px-6 py-4">
           {{ sender[i] }}
         </td>
         <td class="px-6 py-4">
-          {{ amount[i] }}
-        </td>
-        <td class="px-6 py-4">
-          {{ status[i] }}
+          <span v-if="status[i] == 'in'" class="text-red-500">- {{ amount[i] }} TON</span>
+          <span v-if="status[i] == 'out'" class="text-green-500">+ {{ amount[i] }} TON</span>
         </td>
       </tr>
       </tbody>
@@ -51,7 +59,6 @@
 <script setup>
 import { ref } from 'vue'
 
-// let data = ref()
 let ton = null
 let limit = 50
 let dataBeta = ref()
