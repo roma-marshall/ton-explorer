@@ -6,29 +6,29 @@
   </div>
   <div class="relative overflow-x-auto">
     <div v-if="isOk"
-         class="hidden sm:grid grid-cols-12 text-xs bg-gray-50 text-gray-700 dark:text-gray-400 uppercase font-bold">
-      <div class="sm:px-6 px-1.5 py-3">
+         class="hidden md:grid grid-cols-12 text-xs bg-gray-50 text-gray-700 dark:text-gray-400 uppercase font-bold">
+      <div class="md:px-6 px-1.5 py-3">
         timestamp
       </div>
-      <div class="sm:px-6 px-1.5 py-3">
+      <div class="md:px-6 px-1.5 py-3">
         status
       </div>
-      <div class="sm:px-6 px-1.5 py-3 grid col-start-4 col-end-7">
+      <div class="md:px-6 px-1.5 py-3 grid col-start-4 col-end-7">
         from
       </div>
-      <div class="sm:px-6 px-1.5 py-3 grid col-start-8 col-end-12">
+      <div class="md:px-6 px-1.5 py-3 grid col-start-8 col-end-12">
         to
       </div>
-      <div class="flex justify-end sm:px-6 px-1.5 py-3">
+      <div class="flex justify-end md:px-6 px-1.5 py-3">
         amount
       </div>
     </div>
     <div v-if="dataBeta" v-for="(item, i) in dataBeta['result']"
-         class="grid grid-cols-12 text-sm bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-      <div class="sm:px-6 px-1.5 py-4">
+         class="grid grid-cols-3 md:grid-cols-12 text-sm bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+      <div class="md:px-6 px-1.5 py-4 whitespace-nowrap">
         {{ timestamp[i] }}
       </div>
-      <div class="sm:px-6 px-1.5 py-4">
+      <div class="md:px-6 px-1.5 py-4">
         <div>
           <span v-if="status[i] == 'in'" class="flex">
             <img src="./assets/out.svg" class="h-6 mr-2 mt-2" alt="out.svg">
@@ -40,13 +40,13 @@
           </span>
         </div>
       </div>
-      <div class="sm:px-6 px-1.5 py-4 grid col-start-4 col-end-7">
+      <div class="md:px-6 px-1.5 py-4 hidden md:grid md:col-start-4 md:col-end-7">
         {{ sender[i] }}
       </div>
-      <div class="sm:px-6 px-1.5 py-4 grid col-start-8 col-end-12">
+      <div class="md:px-6 px-1.5 py-4 grid order-last md:order-none md:col-start-8 md:col-end-12">
         {{ recipient[i] }}
       </div>
-      <div class="flex justify-end sm:px-6 px-1.5 py-4 text-right font-semibold">
+      <div class="flex justify-end md:px-6 px-1.5 py-4 text-right font-semibold">
         <span v-if="status[i] == 'in'" class="text-in">-&nbsp;{{ amount[i] }}&nbsp;TON</span>
         <span v-if="status[i] == 'out'" class="text-out">+&nbsp;{{ amount[i] }}&nbsp;TON</span>
       </div>
