@@ -29,16 +29,10 @@
         {{ timestamp[i] }}
       </div>
       <div class="md:px-6 px-1.5 py-4">
-        <div>
-          <span v-if="status[i] == 'in'" class="flex">
-            <img src="./assets/out.svg" class="h-6 mr-2 mt-2" alt="out.svg">
-            Sent TON
-          </span>
-          <span v-if="status[i] == 'out'" class="flex">
-            <img src="./assets/in.svg" class="h-6 mr-2 mt-2" alt="in.svg">
-            Received TON
-          </span>
-        </div>
+        <span class="flex uppercase">
+          <img :src="`src/assets/${status[i]}.svg`" class="h-6 mr-2 -mt-0.5" alt="in.svg">
+          {{ status[i] }}
+        </span>
       </div>
       <div class="md:px-6 px-1.5 py-4 hidden md:grid md:col-start-4 md:col-end-7">
         {{ sender[i] }}
