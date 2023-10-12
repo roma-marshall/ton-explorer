@@ -5,32 +5,26 @@
            placeholder="Search TON addresses, domains and transactions...">
   </div>
   <div class="relative overflow-x-auto">
-    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-      <thead v-if="isOk" class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-      <tr>
-        <th scope="col" class="px-6 py-3">
+    <div v-if="isOk" class="hidden sm:grid grid-cols-4 text-xs bg-gray-50 text-gray-700 dark:text-gray-400 uppercase font-bold">
+        <div class="sm:px-6 px-1.5 py-3">
           timestamp
-        </th>
-        <th scope="col" class="px-6 py-3">
+        </div>
+        <div class="sm:px-6 px-1.5 py-3">
           status
-        </th>
-        <th scope="col" class="px-6 py-3">
-          recipient
-        </th>
-        <th scope="col" class="px-6 py-3">
-          sender
-        </th>
-        <th scope="col" class="px-6 py-3">
+        </div>
+        <div class="sm:px-6 px-1.5 py-3">
+          address
+        </div>
+        <div class="flex justify-end sm:px-6 px-1.5 py-3">
           amount
-        </th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-if="dataBeta" v-for="(item, i) in dataBeta['result']" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-        <td class="px-6 py-4 whitespace-nowrap">
+        </div>
+      </div>
+      <div v-if="dataBeta" v-for="(item, i) in dataBeta['result']"
+           class="grid grid-cols-4 bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+        <div class="sm:px-6 px-1.5 py-4">
           {{ timestamp[i] }}
-        </td>
-        <td class="px-6 py-4">
+        </div>
+        <div class="sm:px-6 px-1.5 py-4">
           <span v-if="status[i] == 'in'" class="flex">
             <img src="./assets/out.svg" class="h-5 mr-2" alt="out.svg">
             Sent TON
@@ -39,20 +33,16 @@
             <img src="./assets/in.svg" class="h-5 mr-2" alt="in.svg">
             Received TON
           </span>
-        </td>
-        <td class="px-6 py-4">
-          {{ recipient[i] }}
-        </td>
-        <td class="px-6 py-4">
-          {{ sender[i] }}
-        </td>
-        <td class="px-6 py-4">
+        </div>
+        <div class="sm:px-6 px-1.5 py-4">
+          <span v-if="status[i] == 'in'">{{ sender[i] }}</span>
+          <span v-if="status[i] == 'out'">{{ recipient[i] }}</span>
+        </div>
+        <div class="flex justify-end sm:px-6 px-1.5 py-4">
           <span v-if="status[i] == 'in'" class="text-red-500">- {{ amount[i] }} TON</span>
           <span v-if="status[i] == 'out'" class="text-green-500">+ {{ amount[i] }} TON</span>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+        </div>
+      </div>
   </div>
 </template>
 
