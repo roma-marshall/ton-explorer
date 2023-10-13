@@ -29,9 +29,10 @@
         {{ timestamp[i] }}
       </div>
       <div class="md:px-6 px-1.5 py-4">
-        <span class="flex uppercase">
-          <img :src="`src/assets/${status[i]}.svg`" class="h-6 mr-2 -mt-0.5" alt="in.svg">
-          {{ status[i] }}
+        <span class="flex">
+          <In v-if="status[i] === 'in'" class="w-6 h-6 mr-2 -mt-0.5" />
+          <Out v-if="status[i] === 'out'" class="w-6 h-6 mr-2 -mt-0.5" />
+          <span class="text-right uppercase">{{ status[i] }}</span>
         </span>
       </div>
       <div class="md:px-6 px-1.5 py-4 hidden md:grid md:col-start-4 md:col-end-7">
@@ -41,8 +42,8 @@
         {{ recipient[i] }}
       </div>
       <div class="flex justify-end md:px-6 px-1.5 py-4 text-right font-semibold">
-        <span v-if="status[i] == 'in'" class="text-in">-&nbsp;{{ amount[i] }}&nbsp;TON</span>
-        <span v-if="status[i] == 'out'" class="text-out">+&nbsp;{{ amount[i] }}&nbsp;TON</span>
+        <span v-if="status[i] == 'out'" class="text-in">-&nbsp;{{ amount[i] }}&nbsp;TON</span>
+        <span v-if="status[i] == 'in'" class="text-out">+&nbsp;{{ amount[i] }}&nbsp;TON</span>
       </div>
     </div>
   </div>
@@ -50,6 +51,8 @@
 
 <script setup>
 import { ref } from 'vue'
+import In from './assets/in.svg'
+import Out from './assets/out.svg'
 
 let ton = null
 let limit = 50
@@ -93,7 +96,7 @@ const getData = async (dataBeta) => {
       recipient.value.push(recipientTemp)
       sender.value.push(senderTemp)
       amount.value.push(amountTemp)
-      status.value.push('in')
+      status.value.push('out')
     } else if (item['in_msg']['source'] !== '') {
       let recipientTemp = item['in_msg']['destination']
       let senderTemp = item['in_msg']['source']
@@ -101,7 +104,7 @@ const getData = async (dataBeta) => {
       recipient.value.push(recipientTemp)
       sender.value.push(senderTemp)
       amount.value.push(amountTemp)
-      status.value.push('out')
+      status.value.push('in')
     }
   })
 }
