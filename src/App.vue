@@ -6,7 +6,7 @@
   </div>
   <div class="relative overflow-x-auto">
     <div v-if="isOk"
-         class="hidden lg:grid grid-cols-12 text-xs bg-gray-50 text-gray-700 dark:text-gray-400 uppercase font-bold">
+         class="hidden lg:grid grid-cols-12 text-xs bg-gray-50 text-gray-700 uppercase font-bold">
       <div class="lg:px-6 px-1.5 py-3">
         timestamp
       </div>
@@ -24,7 +24,7 @@
       </div>
     </div>
     <div v-if="dataBeta" v-for="(item, i) in dataBeta['result']"
-         class="grid grid-cols-3 lg:grid-cols-12 text-sm bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+         class="grid grid-cols-3 lg:grid-cols-12 text-sm bg-white border-b">
       <div class="lg:px-6 px-1.5 py-4 whitespace-nowrap">
         {{ timestamp[i] }}
       </div>
