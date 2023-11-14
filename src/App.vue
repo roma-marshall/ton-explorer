@@ -23,7 +23,7 @@
         amount
       </div>
     </div>
-    <div v-if="dataBeta" v-for="(item, i) in dataBeta['result']"
+    <div v-if="dataBeta" v-for="(item, i) in dataBeta['transactions']"
          class="grid grid-cols-3 lg:grid-cols-12 text-sm bg-white border-b">
       <div class="lg:px-6 px-1.5 py-4 whitespace-nowrap">
         {{ timestamp[i] }}
@@ -65,21 +65,18 @@ let status = ref([])
 let isOk = ref(null)
 
 const fetchData = async () => {
-  const urlAlfa = `https://tonapi.io/v2/blockchain/accounts/${ton}/transactions?limit=${limit}`
-  const responseAlfa = await fetch(urlAlfa)
-  const dataAlfa = await responseAlfa.json()
-  const accountAddress = dataAlfa['transactions'][0]['account']['address']
-
-  const urlBeta = `https://toncenter.com/api/v2/getTransactions?address=${accountAddress}&limit=${limit}&to_lt=0&archival=false`
+  const urlBeta = `https://tonapi.io/v2/blockchain/accounts/${ton}/transactions?limit=${limit}`
   const responseBeta = await fetch(urlBeta)
   dataBeta = await responseBeta.json()
 
-  isOk.value = dataBeta['ok']
+  if (dataBeta)
+      isOk.value = true
+
   await getData(dataBeta)
 }
 
 const getData = async (dataBeta) => {
-  dataBeta['result'].forEach(item => {
+  dataBeta['transactions'].forEach(item => {
     // timestamp
     let timestampTemp = new Date(item['utime'] * 1000)
     let month = timestampTemp.toLocaleString('en', {month: 'short'})
