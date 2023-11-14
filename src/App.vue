@@ -42,8 +42,8 @@
         {{ recipient[i] }}
       </div>
       <div class="flex justify-end lg:px-6 px-1.5 py-4 text-right font-semibold">
-        <span v-if="status[i] == 'out'" class="text-in">-&nbsp;{{ amount[i] }}&nbsp;TON</span>
-        <span v-if="status[i] == 'in'" class="text-out">+&nbsp;{{ amount[i] }}&nbsp;TON</span>
+        <span v-if="status[i] === 'out'" class="text-in">-&nbsp;{{ amount[i] }}&nbsp;TON</span>
+        <span v-if="status[i] === 'in'" class="text-out">+&nbsp;{{ amount[i] }}&nbsp;TON</span>
       </div>
     </div>
   </div>
