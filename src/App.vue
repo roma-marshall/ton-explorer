@@ -86,7 +86,7 @@ const getData = async (dataBeta) => {
     timestamp.value.push(`${day} ${month}, ${hours}:${minutes}`)
 
     // recipient, sender, amount, status
-    if (item['in_msg']['source'] === '') {
+    if (!item['in_msg']['source']) {
       let recipientTemp = item['out_msgs'][0]['destination']
       let senderTemp = item['out_msgs'][0]['source']
       let amountTemp = item['out_msgs'][0]['value'] / 1000000000
