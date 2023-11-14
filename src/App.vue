@@ -85,18 +85,20 @@ const getData = async (dataBeta) => {
     let minutes = (timestampTemp.getMinutes() < 10 ? '0' : '') + timestampTemp.getMinutes()
     timestamp.value.push(`${day} ${month}, ${hours}:${minutes}`)
 
+    console.log(dataBeta['transactions'])
+
     // recipient, sender, amount, status
     if (!item['in_msg']['source']) {
-      let recipientTemp = item['out_msgs'][0]['destination']
-      let senderTemp = item['out_msgs'][0]['source']
+      let recipientTemp = item['out_msgs'][0]['destination']['address']
+      let senderTemp = item['out_msgs'][0]['source']['address']
       let amountTemp = item['out_msgs'][0]['value'] / 1000000000
       recipient.value.push(recipientTemp)
       sender.value.push(senderTemp)
       amount.value.push(amountTemp)
       status.value.push('out')
     } else if (item['in_msg']['source'] !== '') {
-      let recipientTemp = item['in_msg']['destination']
-      let senderTemp = item['in_msg']['source']
+      let recipientTemp = item['in_msg']['destination']['address']
+      let senderTemp = item['in_msg']['source']['address']
       let amountTemp = item['in_msg']['value'] / 1000000000
       recipient.value.push(recipientTemp)
       sender.value.push(senderTemp)
