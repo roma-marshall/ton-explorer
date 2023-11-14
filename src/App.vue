@@ -13,7 +13,7 @@
       <div class="lg:px-6 px-1.5 py-3">
         status
       </div>
-      <div class="lg:px-6 px-1.5 py-3 grid col-start-4 col-end-7">
+      <div class="lg:px-6 px-1.5 py-3 grid col-start-3 col-end-7">
         from
       </div>
       <div class="lg:px-6 px-1.5 py-3 grid col-start-8 col-end-12">
@@ -35,7 +35,7 @@
           <span class="text-right uppercase">{{ status[i] }}</span>
         </span>
       </div>
-      <div class="lg:px-6 px-1.5 py-4 hidden lg:grid lg:col-start-4 lg:col-end-7">
+      <div class="lg:px-6 px-1.5 py-4 hidden lg:grid lg:col-start-3 lg:col-end-7">
         {{ sender[i] }}
       </div>
       <div class="lg:px-6 px-1.5 py-4 grid order-last lg:order-none lg:col-start-8 lg:col-end-12">
