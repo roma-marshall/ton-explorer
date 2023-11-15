@@ -1,6 +1,6 @@
 # TON Explorer
 
-TON Explorer is an open source block explorer providing detailed TON’s blockchain data. No ads and tracking-free.
+TON Explorer is an open source blockchain explorer providing detailed TON’s blockchain data. No ads and tracking-free.
 
 ## Awards
 
