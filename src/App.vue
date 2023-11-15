@@ -13,7 +13,7 @@
       <div class="lg:px-6 px-1.5 py-3">
         status
       </div>
-      <div class="lg:px-6 px-1.5 py-3 grid col-start-4 col-end-7">
+      <div class="lg:px-6 px-1.5 py-3 grid col-start-3 col-end-7">
         from
       </div>
       <div class="lg:px-6 px-1.5 py-3 grid col-start-8 col-end-12">
@@ -23,7 +23,7 @@
         amount
       </div>
     </div>
-    <div v-if="dataBeta" v-for="(item, i) in dataBeta['result']"
+    <div v-if="dataBeta" v-for="(item, i) in dataBeta['transactions']"
          class="grid grid-cols-3 lg:grid-cols-12 text-sm bg-white border-b">
       <div class="lg:px-6 px-1.5 py-4 whitespace-nowrap">
         {{ timestamp[i] }}
@@ -35,15 +35,15 @@
           <span class="text-right uppercase">{{ status[i] }}</span>
         </span>
       </div>
-      <div class="lg:px-6 px-1.5 py-4 hidden lg:grid lg:col-start-4 lg:col-end-7">
+      <div class="lg:px-6 px-1.5 py-4 hidden lg:grid lg:col-start-3 lg:col-end-7">
         {{ sender[i] }}
       </div>
       <div class="lg:px-6 px-1.5 py-4 grid order-last lg:order-none lg:col-start-8 lg:col-end-12">
         {{ recipient[i] }}
       </div>
       <div class="flex justify-end lg:px-6 px-1.5 py-4 text-right font-semibold">
-        <span v-if="status[i] == 'out'" class="text-in">-&nbsp;{{ amount[i] }}&nbsp;TON</span>
-        <span v-if="status[i] == 'in'" class="text-out">+&nbsp;{{ amount[i] }}&nbsp;TON</span>
+        <span v-if="status[i] === 'out'" class="text-in">-&nbsp;{{ amount[i] }}&nbsp;TON</span>
+        <span v-if="status[i] === 'in'" class="text-out">+&nbsp;{{ amount[i] }}&nbsp;TON</span>
       </div>
     </div>
   </div>
@@ -65,21 +65,18 @@ let status = ref([])
 let isOk = ref(null)
 
 const fetchData = async () => {
-  const urlAlfa = `https://tonapi.io/v2/blockchain/accounts/${ton}/transactions?limit=${limit}`
-  const responseAlfa = await fetch(urlAlfa)
-  const dataAlfa = await responseAlfa.json()
-  const accountAddress = dataAlfa['transactions'][0]['account']['address']
-
-  const urlBeta = `https://toncenter.com/api/v2/getTransactions?address=${accountAddress}&limit=${limit}&to_lt=0&archival=false`
+  const urlBeta = `https://tonapi.io/v2/blockchain/accounts/${ton}/transactions?limit=${limit}`
   const responseBeta = await fetch(urlBeta)
   dataBeta = await responseBeta.json()
 
-  isOk.value = dataBeta['ok']
+  if (dataBeta)
+      isOk.value = true
+
   await getData(dataBeta)
 }
 
 const getData = async (dataBeta) => {
-  dataBeta['result'].forEach(item => {
+  dataBeta['transactions'].forEach(item => {
     // timestamp
     let timestampTemp = new Date(item['utime'] * 1000)
     let month = timestampTemp.toLocaleString('en', {month: 'short'})
@@ -88,18 +85,20 @@ const getData = async (dataBeta) => {
     let minutes = (timestampTemp.getMinutes() < 10 ? '0' : '') + timestampTemp.getMinutes()
     timestamp.value.push(`${day} ${month}, ${hours}:${minutes}`)
 
+    console.log(dataBeta['transactions'])
+
     // recipient, sender, amount, status
-    if (item['in_msg']['source'] === '') {
-      let recipientTemp = item['out_msgs'][0]['destination']
-      let senderTemp = item['out_msgs'][0]['source']
+    if (!item['in_msg']['source']) {
+      let recipientTemp = item['out_msgs'][0]['destination']['address']
+      let senderTemp = item['out_msgs'][0]['source']['address']
       let amountTemp = item['out_msgs'][0]['value'] / 1000000000
       recipient.value.push(recipientTemp)
       sender.value.push(senderTemp)
       amount.value.push(amountTemp)
       status.value.push('out')
     } else if (item['in_msg']['source'] !== '') {
-      let recipientTemp = item['in_msg']['destination']
-      let senderTemp = item['in_msg']['source']
+      let recipientTemp = item['in_msg']['destination']['address']
+      let senderTemp = item['in_msg']['source']['address']
       let amountTemp = item['in_msg']['value'] / 1000000000
       recipient.value.push(recipientTemp)
       sender.value.push(senderTemp)
