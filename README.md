@@ -2,6 +2,10 @@
 
 TON Explorer is an open source block explorer providing detailed TON’s blockchain data. No ads and tracking-free.
 
+## Awards
+
+This project is the winner of the [Hack-TON-berfest 2023](https://society.ton.org/hack-ton-berfest-2023) challenge.
+
 ## Recommended Installation
 
 ```
