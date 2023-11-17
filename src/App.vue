@@ -85,8 +85,6 @@ const getData = async (dataBeta) => {
     let minutes = (timestampTemp.getMinutes() < 10 ? '0' : '') + timestampTemp.getMinutes()
     timestamp.value.push(`${day} ${month}, ${hours}:${minutes}`)
 
-    console.log(dataBeta['transactions'])
-
     // recipient, sender, amount, status
     if (!item['in_msg']['source']) {
       let recipientTemp = item['out_msgs'][0]['destination']['address']
